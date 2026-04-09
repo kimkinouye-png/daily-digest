@@ -10,7 +10,6 @@ export async function GET(request: Request) {
   const authHeader = request.headers.get('authorization')
   const cronSecret = process.env.CRON_SECRET
   if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
-    // Allow manual triggers without secret in dev, but block unauthorized cron calls
     const url = new URL(request.url)
     const isManual = url.searchParams.get('manual') === 'true'
     const triggerKey = url.searchParams.get('key')
@@ -36,15 +35,21 @@ export async function GET(request: Request) {
     const digest = await buildDigest(items)
     console.log(`[Digest] Digest ready: ${digest.storyCount} stories in ${digest.sections.length} sections`)
 
-    console.log('[Digest] Posting to Slack...')
-    await postToSlack(digest)
-    console.log('[Digest] Posted successfully')
+    // Post to Slack only if webhook is configured
+    if (process.env.SLACK_WEBHOOK_URL) {
+      console.log('[Digest] Posting to Slack...')
+      await postToSlack(digest)
+      console.log('[Digest] Posted successfully')
+    } else {
+      console.log('[Digest] No Slack webhook configured, skipping post')
+    }
 
+    // Return full digest data for the web UI
     return NextResponse.json({
-      status: 'posted',
+      status: process.env.SLACK_WEBHOOK_URL ? 'posted' : 'generated',
       date: digest.date,
       storyCount: digest.storyCount,
-      sections: digest.sections.map((s) => `${s.label} (${s.stories.length})`),
+      sections: digest.sections,
     })
   } catch (err: any) {
     console.error('[Digest] Error:', err)
