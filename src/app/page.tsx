@@ -23,7 +23,6 @@ export default async function Home() {
     )
   }
 
-  // Assign anchor IDs while preserving section order
   let counter = 0
   const sectionsWithAnchors = digest.sections.map((section) => ({
     ...section,
@@ -33,7 +32,6 @@ export default async function Home() {
 
   return (
     <div style={{ minHeight: '100vh' }}>
-      {/* Sticky top bar */}
       <header style={{
         position: 'sticky', top: 0, zIndex: 10,
         background: 'rgba(14,14,14,0.92)',
@@ -53,7 +51,6 @@ export default async function Home() {
       </header>
 
       <main style={{ maxWidth: 720, margin: '0 auto', padding: 'clamp(32px, 6vw, 56px) clamp(20px, 5vw, 32px) 96px' }}>
-        {/* Hero */}
         <section style={{ marginBottom: 'clamp(40px, 7vw, 64px)' }}>
           <p style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.7rem', letterSpacing: '0.16em', color: 'rgba(240,237,230,0.35)', textTransform: 'uppercase', marginBottom: 14 }}>
             Today's edition
@@ -71,7 +68,6 @@ export default async function Home() {
           </p>
         </section>
 
-        {/* In today's issue */}
         <section style={{
           marginBottom: 'clamp(48px, 8vw, 72px)',
           padding: 'clamp(20px, 4vw, 28px)',
@@ -96,11 +92,31 @@ export default async function Home() {
                     display: 'block', textDecoration: 'none', color: '#f0ede6',
                   }}
                 >
-                  <div style={{ display: 'flex', gap: 12, alignItems: 'baseline' }}>
+                  <div style={{ display: 'flex', gap: 12, alignItems: 'baseline', flexWrap: 'wrap' }}>
                     <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.7rem', color: 'rgba(240,237,230,0.4)', flexShrink: 0 }}>
                       {String(i + 1).padStart(2, '0')}
                     </span>
-                    <span style={{ fontSize: '0.95rem', fontWeight: 500, lineHeight: 1.4 }}>{story.title}</span>
+                    <span style={{ fontSize: '0.95rem', fontWeight: 500, lineHeight: 1.4, flex: '1 1 auto' }}>
+                      {story.title}
+                      {story.designRelevance && (
+                        <span style={{
+                          display: 'inline-block',
+                          marginLeft: 8,
+                          padding: '2px 6px',
+                          fontFamily: "'DM Mono', monospace",
+                          fontSize: '0.55rem',
+                          fontWeight: 500,
+                          letterSpacing: '0.14em',
+                          color: 'rgba(240,237,230,0.7)',
+                          border: '0.5px solid rgba(240,237,230,0.25)',
+                          borderRadius: 3,
+                          textTransform: 'uppercase',
+                          verticalAlign: '2px',
+                        }}>
+                          Design
+                        </span>
+                      )}
+                    </span>
                   </div>
                   {story.tldr && (
                     <p style={{ fontSize: '0.85rem', color: 'rgba(240,237,230,0.5)', fontWeight: 300, lineHeight: 1.5, margin: '4px 0 0 32px' }}>
@@ -113,7 +129,6 @@ export default async function Home() {
           </ol>
         </section>
 
-        {/* Sections with stories */}
         {sectionsWithAnchors.map((section) => (
           <section key={section.category} style={{ marginBottom: 'clamp(48px, 8vw, 72px)' }}>
             <h2 style={{
@@ -125,12 +140,14 @@ export default async function Home() {
             }}>
               {section.label}
             </h2>
-            {section.stories.map((story) => (
+            {section.stories.map((story, idx) => (
               <article
                 id={story.anchor}
                 key={story.anchor}
                 style={{
-                  marginBottom: 'clamp(36px, 6vw, 56px)',
+                  paddingBottom: idx < section.stories.length - 1 ? 'clamp(36px, 6vw, 56px)' : 0,
+                  marginBottom: idx < section.stories.length - 1 ? 'clamp(36px, 6vw, 56px)' : 0,
+                  borderBottom: idx < section.stories.length - 1 ? '0.5px solid rgba(240,237,230,0.07)' : 'none',
                   scrollMarginTop: 80,
                 }}
               >
@@ -187,12 +204,41 @@ export default async function Home() {
                     </li>
                   ))}
                 </ul>
+                {story.designImplication && (
+                  <div style={{
+                    marginTop: 24,
+                    paddingTop: 18,
+                    paddingLeft: 16,
+                    borderTop: '0.5px solid rgba(240,237,230,0.08)',
+                    borderLeft: '2px solid rgba(240,237,230,0.25)',
+                  }}>
+                    <p style={{
+                      fontFamily: "'DM Mono', monospace",
+                      fontSize: '0.6rem',
+                      letterSpacing: '0.14em',
+                      color: 'rgba(240,237,230,0.5)',
+                      textTransform: 'uppercase',
+                      margin: '0 0 8px',
+                    }}>
+                      For design ops
+                    </p>
+                    <p style={{
+                      fontSize: '0.92rem',
+                      color: 'rgba(240,237,230,0.75)',
+                      fontWeight: 300,
+                      lineHeight: 1.65,
+                      margin: 0,
+                      fontStyle: 'italic',
+                    }}>
+                      {story.designImplication}
+                    </p>
+                  </div>
+                )}
               </article>
             ))}
           </section>
         ))}
 
-        {/* Footer */}
         <footer style={{
           marginTop: 'clamp(48px, 8vw, 80px)',
           paddingTop: 24,

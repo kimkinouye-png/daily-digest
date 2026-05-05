@@ -103,7 +103,6 @@ export default function EditorClient({ digest }: { digest: StoredDigest }) {
     setPublishing(true)
     setMsg(null)
     try {
-      // Save first to capture any pending edits
       await fetch(`/api/digest/${digest.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
@@ -204,7 +203,7 @@ export default function EditorClient({ digest }: { digest: StoredDigest }) {
                 style={{ ...inputStyle, fontFamily: "'DM Sans', sans-serif", resize: 'vertical' }}
               />
             </div>
-            <div>
+            <div style={{ marginBottom: 18 }}>
               <label style={labelStyle}>Bullets</label>
               {story.bullets.map((b, bi) => (
                 <div key={bi} style={{ display: 'grid', gridTemplateColumns: '160px 1fr auto', gap: 8, marginBottom: 8, alignItems: 'start' }}>
@@ -237,6 +236,34 @@ export default function EditorClient({ digest }: { digest: StoredDigest }) {
                 + Add bullet
               </button>
             </div>
+
+            {/* Design ops fields */}
+            <div style={{ marginTop: 14, padding: 14, borderRadius: 6, border: '0.5px dashed rgba(240,237,230,0.12)', background: 'rgba(240,237,230,0.01)' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', marginBottom: story.designRelevance ? 12 : 0 }}>
+                <input
+                  type="checkbox"
+                  checked={!!story.designRelevance}
+                  onChange={(e) => updateStory(i, { designRelevance: e.target.checked })}
+                  style={{ accentColor: '#f0ede6', cursor: 'pointer' }}
+                />
+                <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.65rem', letterSpacing: '0.1em', color: 'rgba(240,237,230,0.6)', textTransform: 'uppercase' }}>
+                  Design-ops relevant
+                </span>
+              </label>
+              {story.designRelevance && (
+                <div>
+                  <label style={labelStyle}>For design ops (1-2 sentences — appears below the bullets)</label>
+                  <textarea
+                    value={story.designImplication || ''}
+                    onChange={(e) => updateStory(i, { designImplication: e.target.value })}
+                    placeholder="What this means for design teams or design operations specifically."
+                    rows={2}
+                    style={{ ...inputStyle, fontFamily: "'DM Sans', sans-serif", resize: 'vertical' }}
+                  />
+                </div>
+              )}
+            </div>
+
             <div style={{ marginTop: 18, paddingTop: 14, borderTop: '0.5px solid rgba(240,237,230,0.06)', textAlign: 'right' }}>
               <button
                 onClick={() => removeStory(i)}
