@@ -1,32 +1,15 @@
 import Anthropic from '@anthropic-ai/sdk'
 import type { FeedItem } from './rss'
 import { CATEGORY_LABELS, type FeedSource } from './feeds'
+import { VALID_LENSES, type Lens, type DigestStory } from './lenses'
+
+// Re-export the lens types so existing consumers of '@/lib/summarize' keep
+// working unchanged. Client components should import from '@/lib/lenses'
+// directly to avoid pulling the Anthropic SDK into the browser bundle.
+export { VALID_LENSES } from './lenses'
+export type { Lens, DigestBullet, DigestImplication, DigestStory } from './lenses'
 
 const client = new Anthropic()
-
-export const VALID_LENSES = ['design', 'ethics', 'engineering', 'product', 'leadership', 'accessibility'] as const
-export type Lens = typeof VALID_LENSES[number]
-
-export interface DigestBullet {
-  label: string
-  text: string
-}
-
-export interface DigestImplication {
-  lens: Lens
-  text: string
-}
-
-export interface DigestStory {
-  title: string
-  source: string
-  link: string
-  category: FeedSource['category']
-  tldr: string
-  bullets: DigestBullet[]
-  tags?: Lens[]
-  implication?: DigestImplication
-}
 
 export interface Digest {
   date: string

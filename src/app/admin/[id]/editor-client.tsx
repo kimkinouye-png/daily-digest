@@ -4,8 +4,8 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import type { StoredDigest } from '@/lib/store'
-import type { DigestStory, DigestBullet, Lens } from '@/lib/summarize'
-import { VALID_LENSES } from '@/lib/summarize'
+import type { DigestStory, DigestBullet, Lens } from '@/lib/lenses'
+import { VALID_LENSES } from '@/lib/lenses'
 import type { FeedSource } from '@/lib/feeds'
 
 const CATEGORIES: { value: FeedSource['category']; label: string }[] = [
