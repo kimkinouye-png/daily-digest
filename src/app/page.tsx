@@ -76,7 +76,7 @@ export default async function Home() {
             Daily Digest
           </span>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.65rem', color: 'rgba(var(--text-base), 0.35)', letterSpacing: '0.04em', textAlign: 'right' }}>
+            <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.65rem', color: 'rgba(var(--text-base), 0.55)', letterSpacing: '0.04em', textAlign: 'right' }}>
               {digest.date}
             </span>
             <ThemeToggle />
@@ -86,7 +86,7 @@ export default async function Home() {
 
       <main style={{ maxWidth: 720, margin: '0 auto', padding: 'clamp(32px, 6vw, 56px) clamp(20px, 5vw, 32px) 96px' }}>
         <section style={{ marginBottom: 'clamp(40px, 7vw, 64px)' }}>
-          <p style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.7rem', letterSpacing: '0.16em', color: 'rgba(var(--text-base), 0.35)', textTransform: 'uppercase', marginBottom: 14 }}>
+          <p style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.7rem', letterSpacing: '0.16em', color: 'rgba(var(--text-base), 0.65)', textTransform: 'uppercase', marginBottom: 14 }}>
             Today's edition
           </p>
           <h1 style={{
@@ -137,7 +137,7 @@ export default async function Home() {
                   style={{ display: 'block', textDecoration: 'none', color: 'rgb(var(--text-base))' }}
                 >
                   <div style={{ display: 'flex', gap: 12, alignItems: 'baseline', flexWrap: 'wrap' }}>
-                    <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.7rem', color: 'rgba(var(--text-base), 0.4)', flexShrink: 0 }}>
+                    <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.7rem', color: 'rgba(var(--text-base), 0.55)', flexShrink: 0 }}>
                       {String(i + 1).padStart(2, '0')}
                     </span>
                     <span style={{ fontSize: '0.95rem', fontWeight: 500, lineHeight: 1.4, flex: '1 1 auto' }}>
@@ -206,7 +206,7 @@ export default async function Home() {
                   <p style={{
                     fontFamily: "'DM Mono', monospace",
                     fontSize: '0.65rem',
-                    color: 'rgba(var(--text-base), 0.4)',
+                    color: 'rgba(var(--text-base), 0.65)',
                     letterSpacing: '0.06em',
                     margin: 0,
                     textTransform: 'uppercase',
