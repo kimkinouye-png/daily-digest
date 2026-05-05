@@ -3,12 +3,23 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-export default function DeletePublishedButton({ id, dateLabel }: { id: string; dateLabel: string }) {
+export default function DeleteDigestButton({
+  id,
+  dateLabel,
+  kind,
+}: {
+  id: string
+  dateLabel: string
+  kind: 'draft' | 'published'
+}) {
   const router = useRouter()
   const [busy, setBusy] = useState(false)
 
-  const click = async () => {
-    if (!confirm(`Delete the published edition for ${dateLabel}? This cannot be undone.`)) return
+  const click = async (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    const label = kind === 'draft' ? 'draft' : 'published edition'
+    if (!confirm(`Delete the ${label} for ${dateLabel}? This cannot be undone.`)) return
     setBusy(true)
     try {
       const res = await fetch(`/api/digest/${id}/delete`, { method: 'POST' })

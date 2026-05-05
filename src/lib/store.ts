@@ -71,22 +71,23 @@ export async function publishDigest(id: string): Promise<StoredDigest | null> {
   return published
 }
 
-export async function deletePublished(id: string): Promise<boolean> {
+export async function deleteDigest(id: string): Promise<boolean> {
   const item = await getDigest(id)
-  if (!item || item.status !== 'published') return false
+  if (!item) return false
 
-  // Remove the item itself
   await redis.del(KEY_ITEM(id))
 
-  // If this was the latest-published pointer, recompute
-  const currentLatestId = await redis.get<string>(KEY_LATEST_PUBLISHED)
-  if (currentLatestId === id) {
-    // Find the next most recent published item
-    const remaining = await listPublished()
-    if (remaining.length > 0) {
-      await redis.set(KEY_LATEST_PUBLISHED, remaining[0].id)
-    } else {
-      await redis.del(KEY_LATEST_PUBLISHED)
+  if (item.status === 'draft') {
+    await redis.lrem(KEY_DRAFTS, 0, id)
+  } else if (item.status === 'published') {
+    const currentLatestId = await redis.get<string>(KEY_LATEST_PUBLISHED)
+    if (currentLatestId === id) {
+      const remaining = await listPublished()
+      if (remaining.length > 0) {
+        await redis.set(KEY_LATEST_PUBLISHED, remaining[0].id)
+      } else {
+        await redis.del(KEY_LATEST_PUBLISHED)
+      }
     }
   }
 

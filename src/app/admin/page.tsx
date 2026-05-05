@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { listDrafts, listPublished } from '@/lib/store'
 import GenerateButton from './generate-button'
 import LogoutButton from './logout-button'
-import DeletePublishedButton from './delete-published-button'
+import DeleteDigestButton from './delete-digest-button'
 import ThemeToggle from '@/components/theme-toggle'
 
 export const dynamic = 'force-dynamic'
@@ -52,15 +52,21 @@ export default async function AdminHome() {
         {drafts.length > 0 && (
           <ul style={{ listStyle: 'none', padding: 0, margin: 0, marginBottom: 64 }}>
             {drafts.map((d) => (
-              <li key={d.id} style={{ marginBottom: 12 }}>
+              <li key={d.id} style={{
+                marginBottom: 12,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 10,
+                padding: '16px 20px',
+                borderRadius: 8,
+                border: '0.5px solid rgba(var(--text-base), 0.1)',
+                background: 'rgba(var(--text-base), 0.02)',
+              }}>
                 <Link
                   href={`/admin/${d.id}`}
                   style={{
-                    display: 'block',
-                    padding: '16px 20px',
-                    borderRadius: 8,
-                    border: '0.5px solid rgba(var(--text-base), 0.1)',
-                    background: 'rgba(var(--text-base), 0.02)',
+                    flex: '1 1 auto',
+                    minWidth: 0,
                     color: 'rgb(var(--text-base))',
                     textDecoration: 'none',
                   }}
@@ -70,6 +76,7 @@ export default async function AdminHome() {
                     {d.storyCount} stories · created {new Date(d.createdAt).toLocaleString('en-US', { timeZone: 'America/Chicago' })}
                   </div>
                 </Link>
+                <DeleteDigestButton id={d.id} dateLabel={d.date} kind="draft" />
               </li>
             ))}
           </ul>
@@ -117,7 +124,7 @@ export default async function AdminHome() {
                       {d.storyCount} stories · published {d.publishedAt ? new Date(d.publishedAt).toLocaleDateString('en-US', { timeZone: 'America/Chicago' }) : 'unknown'}
                     </div>
                   </div>
-                  <DeletePublishedButton id={d.id} dateLabel={d.date} />
+                  <DeleteDigestButton id={d.id} dateLabel={d.date} kind="published" />
                 </li>
               ))}
             </ul>
