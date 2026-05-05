@@ -76,3 +76,23 @@ export async function getLatestPublished(): Promise<StoredDigest | null> {
   if (!id) return null
   return redis.get<StoredDigest>(KEY_ITEM(id))
 }
+
+export async function listPublished(): Promise<StoredDigest[]> {
+  let cursor: string | number = 0
+  const ids: string[] = []
+  do {
+    const result: any = await redis.scan(cursor, { match: `${PREFIX}item:*`, count: 100 })
+    const next = result[0]
+    const keys: string[] = result[1] || []
+    cursor = next
+    for (const key of keys) {
+      ids.push(key.replace(`${PREFIX}item:`, ''))
+    }
+  } while (cursor !== 0 && cursor !== '0')
+
+  if (ids.length === 0) return []
+  const items = await Promise.all(ids.map((id) => redis.get<StoredDigest>(KEY_ITEM(id))))
+  return items
+    .filter((x): x is StoredDigest => x !== null && x.status === 'published')
+    .sort((a, b) => (b.publishedAt || '').localeCompare(a.publishedAt || ''))
+}
