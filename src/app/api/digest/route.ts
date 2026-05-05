@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server'
-import { fetchAllFeeds } from '@/lib/rss'
-import { buildDigest } from '@/lib/summarize'
-import { saveDraft } from '@/lib/store'
+import { generateDraft } from '@/lib/generate'
 
 export const maxDuration = 60
 
@@ -19,24 +17,16 @@ export async function GET(request: Request) {
   }
 
   try {
-    console.log('[Digest] Fetching RSS feeds...')
-    const items = await fetchAllFeeds()
-    console.log(`[Digest] Got ${items.length} items from feeds`)
-    if (items.length === 0) {
-      return NextResponse.json({ status: 'skipped', reason: 'No recent articles found' })
+    const result = await generateDraft()
+    if (result.kind === 'skipped') {
+      return NextResponse.json({ status: 'skipped', reason: result.reason })
     }
-    console.log('[Digest] Building digest with Claude...')
-    const digest = await buildDigest(items)
-    console.log(`[Digest] Building done: ${digest.storyCount} stories`)
-    console.log('[Digest] Saving as draft...')
-    const stored = await saveDraft(digest)
-    console.log(`[Digest] Draft saved as ${stored.id}`)
     return NextResponse.json({
       status: 'draft_created',
-      id: stored.id,
-      date: stored.date,
-      storyCount: stored.storyCount,
-      adminUrl: `/admin/${stored.id}`,
+      id: result.stored.id,
+      date: result.stored.date,
+      storyCount: result.stored.storyCount,
+      adminUrl: `/admin/${result.stored.id}`,
     })
   } catch (err: any) {
     console.error('[Digest] Error:', err)
