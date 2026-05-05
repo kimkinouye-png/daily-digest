@@ -44,7 +44,7 @@ function LoginForm() {
   return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
       <form onSubmit={submit} style={{ width: '100%', maxWidth: 360 }}>
-        <p style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.7rem', letterSpacing: '0.18em', color: 'rgba(240,237,230,0.3)', textTransform: 'uppercase', marginBottom: 16, textAlign: 'center' }}>
+        <p style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.7rem', letterSpacing: '0.18em', color: 'rgba(var(--text-base), 0.3)', textTransform: 'uppercase', marginBottom: 16, textAlign: 'center' }}>
           Admin
         </p>
         <h1 style={{ fontFamily: "'DM Serif Display', serif", fontSize: '1.8rem', fontWeight: 400, marginBottom: 32, textAlign: 'center' }}>
@@ -60,9 +60,9 @@ function LoginForm() {
             width: '100%',
             padding: '12px 14px',
             borderRadius: 6,
-            border: '0.5px solid rgba(240,237,230,0.2)',
-            background: 'rgba(240,237,230,0.04)',
-            color: '#f0ede6',
+            border: '0.5px solid rgba(var(--text-base), 0.2)',
+            background: 'rgba(var(--text-base), 0.04)',
+            color: 'rgb(var(--text-base))',
             fontSize: '0.95rem',
             fontFamily: "'DM Sans', sans-serif",
             outline: 'none',
@@ -78,8 +78,8 @@ function LoginForm() {
             padding: '12px 14px',
             borderRadius: 6,
             border: 'none',
-            background: submitting || !password ? 'rgba(240,237,230,0.08)' : '#f0ede6',
-            color: submitting || !password ? 'rgba(240,237,230,0.3)' : '#0e0e0e',
+            background: submitting || !password ? 'rgba(var(--text-base), 0.08)' : 'var(--accent)',
+            color: submitting || !password ? 'rgba(var(--text-base), 0.3)' : 'var(--accent-fg)',
             fontSize: '0.9rem',
             fontWeight: 500,
             fontFamily: "'DM Sans', sans-serif",

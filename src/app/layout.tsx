@@ -5,6 +5,64 @@ export const metadata: Metadata = {
   description: 'AI-curated daily digest of AI, product, and strategy news',
 }
 
+const themeInitScript = `
+(function() {
+  try {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'light' || saved === 'dark') {
+      document.documentElement.setAttribute('data-theme', saved);
+    }
+  } catch(e) {}
+})();
+`
+
+const themeStyles = `
+:root {
+  --bg-page: #0e0e0e;
+  --bg-elevated-low: rgba(240,237,230,0.025);
+  --bg-elevated-high: rgba(240,237,230,0.04);
+  --text-base: 240, 237, 230;
+  --border-base: 255, 255, 255;
+  --header-bg: rgba(14,14,14,0.92);
+  --accent: #f0ede6;
+  --accent-fg: #0e0e0e;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg-page: #faf8f3;
+    --bg-elevated-low: rgba(42,40,38,0.035);
+    --bg-elevated-high: rgba(42,40,38,0.06);
+    --text-base: 42, 40, 38;
+    --border-base: 0, 0, 0;
+    --header-bg: rgba(250,248,243,0.92);
+    --accent: #2a2826;
+    --accent-fg: #faf8f3;
+  }
+}
+:root[data-theme="light"] {
+  --bg-page: #faf8f3;
+  --bg-elevated-low: rgba(42,40,38,0.035);
+  --bg-elevated-high: rgba(42,40,38,0.06);
+  --text-base: 42, 40, 38;
+  --border-base: 0, 0, 0;
+  --header-bg: rgba(250,248,243,0.92);
+  --accent: #2a2826;
+  --accent-fg: #faf8f3;
+}
+:root[data-theme="dark"] {
+  --bg-page: #0e0e0e;
+  --bg-elevated-low: rgba(240,237,230,0.025);
+  --bg-elevated-high: rgba(240,237,230,0.04);
+  --text-base: 240, 237, 230;
+  --border-base: 255, 255, 255;
+  --header-bg: rgba(14,14,14,0.92);
+  --accent: #f0ede6;
+  --accent-fg: #0e0e0e;
+}
+html { scroll-behavior: smooth; }
+body { -webkit-font-smoothing: antialiased; background: var(--bg-page); color: rgb(var(--text-base)); }
+`
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
@@ -15,9 +73,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap"
           rel="stylesheet"
         />
-        <style dangerouslySetInnerHTML={{ __html: `html { scroll-behavior: smooth; } body { -webkit-font-smoothing: antialiased; }` }} />
+        <style dangerouslySetInnerHTML={{ __html: themeStyles }} />
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
-      <body style={{ margin: 0, fontFamily: "'DM Sans', system-ui, sans-serif", background: '#0e0e0e', color: '#f0ede6' }}>
+      <body style={{ margin: 0, fontFamily: "'DM Sans', system-ui, sans-serif" }}>
         {children}
       </body>
     </html>

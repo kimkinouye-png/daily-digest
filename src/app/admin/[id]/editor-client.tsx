@@ -7,6 +7,7 @@ import type { StoredDigest } from '@/lib/store'
 import type { DigestStory, DigestBullet, Lens } from '@/lib/lenses'
 import { VALID_LENSES } from '@/lib/lenses'
 import type { FeedSource } from '@/lib/feeds'
+import ThemeToggle from '@/components/theme-toggle'
 
 const CATEGORIES: { value: FeedSource['category']; label: string }[] = [
   { value: 'ai', label: 'AI Research & News' },
@@ -31,9 +32,9 @@ const inputStyle: React.CSSProperties = {
   width: '100%',
   padding: '8px 10px',
   borderRadius: 4,
-  border: '0.5px solid rgba(240,237,230,0.15)',
-  background: 'rgba(240,237,230,0.03)',
-  color: '#f0ede6',
+  border: '0.5px solid rgba(var(--text-base), 0.15)',
+  background: 'rgba(var(--text-base), 0.03)',
+  color: 'rgb(var(--text-base))',
   fontSize: '0.9rem',
   fontFamily: "'DM Sans', sans-serif",
   outline: 'none',
@@ -45,7 +46,7 @@ const labelStyle: React.CSSProperties = {
   fontFamily: "'DM Mono', monospace",
   fontSize: '0.65rem',
   letterSpacing: '0.1em',
-  color: 'rgba(240,237,230,0.4)',
+  color: 'rgba(var(--text-base), 0.4)',
   textTransform: 'uppercase',
   marginBottom: 6,
 }
@@ -165,17 +166,18 @@ export default function EditorClient({ digest }: { digest: StoredDigest }) {
     <div style={{ minHeight: '100vh', padding: '40px 24px' }}>
       <div style={{ maxWidth: 760, margin: '0 auto' }}>
         <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32, gap: 12, flexWrap: 'wrap' }}>
-          <Link href="/admin" style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.75rem', color: 'rgba(240,237,230,0.5)', textDecoration: 'none' }}>
+          <Link href="/admin" style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.75rem', color: 'rgba(var(--text-base), 0.5)', textDecoration: 'none' }}>
             ← Drafts
           </Link>
           <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-            {msg && <span style={{ fontSize: '0.8rem', color: 'rgba(240,237,230,0.55)' }}>{msg}</span>}
+            <ThemeToggle />
+            {msg && <span style={{ fontSize: '0.8rem', color: 'rgba(var(--text-base), 0.55)' }}>{msg}</span>}
             <button
               onClick={save}
               disabled={saving || publishing}
               style={{
-                padding: '8px 16px', borderRadius: 6, border: '0.5px solid rgba(240,237,230,0.2)',
-                background: 'transparent', color: '#f0ede6',
+                padding: '8px 16px', borderRadius: 6, border: '0.5px solid rgba(var(--text-base), 0.2)',
+                background: 'transparent', color: 'rgb(var(--text-base))',
                 fontSize: '0.8rem', cursor: saving ? 'not-allowed' : 'pointer', fontFamily: "'DM Sans', sans-serif",
               }}
             >
@@ -186,7 +188,7 @@ export default function EditorClient({ digest }: { digest: StoredDigest }) {
               disabled={saving || publishing}
               style={{
                 padding: '8px 16px', borderRadius: 6, border: 'none',
-                background: '#f0ede6', color: '#0e0e0e',
+                background: 'var(--accent)', color: 'var(--accent-fg)',
                 fontSize: '0.8rem', fontWeight: 500, cursor: publishing ? 'not-allowed' : 'pointer', fontFamily: "'DM Sans', sans-serif",
               }}
             >
@@ -200,14 +202,14 @@ export default function EditorClient({ digest }: { digest: StoredDigest }) {
           <input value={date} onChange={(e) => setDate(e.target.value)} style={inputStyle} />
         </div>
 
-        <p style={{ fontSize: '0.85rem', color: 'rgba(240,237,230,0.45)', marginBottom: 32 }}>
+        <p style={{ fontSize: '0.85rem', color: 'rgba(var(--text-base), 0.45)', marginBottom: 32 }}>
           {stories.length} stor{stories.length === 1 ? 'y' : 'ies'}
         </p>
 
         {stories.map((story, i) => (
           <article
             key={i}
-            style={{ marginBottom: 28, padding: 20, borderRadius: 8, border: '0.5px solid rgba(240,237,230,0.08)', background: 'rgba(240,237,230,0.015)' }}
+            style={{ marginBottom: 28, padding: 20, borderRadius: 8, border: '0.5px solid rgba(var(--text-base), 0.08)', background: 'rgba(var(--text-base), 0.015)' }}
           >
             <div style={{ marginBottom: 14 }}>
               <label style={labelStyle}>Title</label>
@@ -226,7 +228,7 @@ export default function EditorClient({ digest }: { digest: StoredDigest }) {
                   style={inputStyle}
                 >
                   {CATEGORIES.map((c) => (
-                    <option key={c.value} value={c.value} style={{ background: '#0e0e0e' }}>
+                    <option key={c.value} value={c.value} style={{ background: 'var(--bg-page)' }}>
                       {c.label}
                     </option>
                   ))}
@@ -265,7 +267,7 @@ export default function EditorClient({ digest }: { digest: StoredDigest }) {
                   />
                   <button
                     onClick={() => removeBullet(i, bi)}
-                    style={{ padding: '6px 10px', borderRadius: 4, border: '0.5px solid rgba(240,237,230,0.15)', background: 'transparent', color: 'rgba(240,237,230,0.5)', fontSize: '0.75rem', cursor: 'pointer' }}
+                    style={{ padding: '6px 10px', borderRadius: 4, border: '0.5px solid rgba(var(--text-base), 0.15)', background: 'transparent', color: 'rgba(var(--text-base), 0.5)', fontSize: '0.75rem', cursor: 'pointer' }}
                     title="Remove bullet"
                   >
                     ×
@@ -274,14 +276,14 @@ export default function EditorClient({ digest }: { digest: StoredDigest }) {
               ))}
               <button
                 onClick={() => addBullet(i)}
-                style={{ marginTop: 4, padding: '6px 12px', borderRadius: 4, border: '0.5px dashed rgba(240,237,230,0.2)', background: 'transparent', color: 'rgba(240,237,230,0.6)', fontSize: '0.75rem', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif" }}
+                style={{ marginTop: 4, padding: '6px 12px', borderRadius: 4, border: '0.5px dashed rgba(var(--text-base), 0.2)', background: 'transparent', color: 'rgba(var(--text-base), 0.6)', fontSize: '0.75rem', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif" }}
               >
                 + Add bullet
               </button>
             </div>
 
             {/* Tags + implication */}
-            <div style={{ marginTop: 14, padding: 14, borderRadius: 6, border: '0.5px dashed rgba(240,237,230,0.12)', background: 'rgba(240,237,230,0.01)' }}>
+            <div style={{ marginTop: 14, padding: 14, borderRadius: 6, border: '0.5px dashed rgba(var(--text-base), 0.12)', background: 'rgba(var(--text-base), 0.01)' }}>
               <label style={labelStyle}>Lens tags (which roles is this relevant to?)</label>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 16 }}>
                 {VALID_LENSES.map((lens) => {
@@ -293,9 +295,9 @@ export default function EditorClient({ digest }: { digest: StoredDigest }) {
                       style={{
                         padding: '4px 10px',
                         borderRadius: 4,
-                        border: '0.5px solid ' + (active ? 'rgba(240,237,230,0.5)' : 'rgba(240,237,230,0.15)'),
-                        background: active ? 'rgba(240,237,230,0.08)' : 'transparent',
-                        color: active ? '#f0ede6' : 'rgba(240,237,230,0.55)',
+                        border: '0.5px solid ' + (active ? 'rgba(var(--text-base), 0.5)' : 'rgba(var(--text-base), 0.15)'),
+                        background: active ? 'rgba(var(--text-base), 0.08)' : 'transparent',
+                        color: active ? 'rgb(var(--text-base))' : 'rgba(var(--text-base), 0.55)',
                         fontFamily: "'DM Mono', monospace",
                         fontSize: '0.7rem',
                         letterSpacing: '0.06em',
@@ -318,7 +320,7 @@ export default function EditorClient({ digest }: { digest: StoredDigest }) {
                   style={{ ...inputStyle, width: 'auto', fontFamily: "'DM Mono', monospace", fontSize: '0.75rem', padding: '8px 10px' }}
                 >
                   {VALID_LENSES.map((lens) => (
-                    <option key={lens} value={lens} style={{ background: '#0e0e0e' }}>
+                    <option key={lens} value={lens} style={{ background: 'var(--bg-page)' }}>
                       For {LENS_LABELS[lens].toLowerCase()}
                     </option>
                   ))}
@@ -333,7 +335,7 @@ export default function EditorClient({ digest }: { digest: StoredDigest }) {
               </div>
             </div>
 
-            <div style={{ marginTop: 18, paddingTop: 14, borderTop: '0.5px solid rgba(240,237,230,0.06)', textAlign: 'right' }}>
+            <div style={{ marginTop: 18, paddingTop: 14, borderTop: '0.5px solid rgba(var(--text-base), 0.06)', textAlign: 'right' }}>
               <button
                 onClick={() => removeStory(i)}
                 style={{ background: 'none', border: 'none', color: 'rgba(231,76,60,0.7)', fontSize: '0.75rem', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif" }}

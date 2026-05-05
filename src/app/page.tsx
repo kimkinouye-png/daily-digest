@@ -1,5 +1,8 @@
 import { getLatestPublished } from '@/lib/store'
-import type { Lens } from '@/lib/summarize'
+import type { Lens } from '@/lib/lenses'
+import { VALID_LENSES } from '@/lib/lenses'
+import { LENS_COLORS, LENS_SHORT_LABELS } from '@/lib/lens-colors'
+import ThemeToggle from '@/components/theme-toggle'
 
 export const dynamic = 'force-dynamic'
 
@@ -19,8 +22,8 @@ const tagChipStyle: React.CSSProperties = {
   fontSize: '0.6rem',
   fontWeight: 500,
   letterSpacing: '0.12em',
-  color: 'rgba(240,237,230,0.7)',
-  border: '0.5px solid rgba(240,237,230,0.25)',
+  color: 'rgba(var(--text-base), 0.7)',
+  border: '0.5px solid rgba(var(--text-base), 0.25)',
   borderRadius: 3,
   textTransform: 'uppercase',
 }
@@ -32,13 +35,13 @@ export default async function Home() {
     return (
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
         <main style={{ maxWidth: 480, textAlign: 'center' }}>
-          <p style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.7rem', letterSpacing: '0.18em', color: 'rgba(240,237,230,0.3)', textTransform: 'uppercase', marginBottom: 24 }}>
+          <p style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.7rem', letterSpacing: '0.18em', color: 'rgba(var(--text-base), 0.3)', textTransform: 'uppercase', marginBottom: 24 }}>
             Daily Digest
           </p>
           <h1 style={{ fontFamily: "'DM Serif Display', serif", fontSize: 'clamp(1.8rem, 5vw, 2.5rem)', fontWeight: 400, marginBottom: 16 }}>
             No edition yet
           </h1>
-          <p style={{ fontSize: '1rem', color: 'rgba(240,237,230,0.5)', fontWeight: 300, lineHeight: 1.7 }}>
+          <p style={{ fontSize: '1rem', color: 'rgba(var(--text-base), 0.5)', fontWeight: 300, lineHeight: 1.7 }}>
             The first edition will be published soon.
           </p>
         </main>
@@ -53,29 +56,37 @@ export default async function Home() {
   }))
   const flatStories = sectionsWithAnchors.flatMap((s) => s.stories)
 
+  // Determine which lenses are actually used in this issue (for the legend)
+  const usedLenses = new Set<Lens>()
+  flatStories.forEach((s) => s.tags?.forEach((t) => usedLenses.add(t)))
+  const legendLenses = VALID_LENSES.filter((l) => usedLenses.has(l))
+
   return (
     <div style={{ minHeight: '100vh' }}>
       <header style={{
         position: 'sticky', top: 0, zIndex: 10,
-        background: 'rgba(14,14,14,0.92)',
+        background: 'var(--header-bg)',
         backdropFilter: 'blur(16px)',
         WebkitBackdropFilter: 'blur(16px)',
-        borderBottom: '0.5px solid rgba(255,255,255,0.07)',
+        borderBottom: '0.5px solid rgba(var(--border-base), 0.07)',
         padding: '14px 20px',
       }}>
         <div style={{ maxWidth: 720, margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 16 }}>
-          <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.7rem', color: 'rgba(240,237,230,0.55)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+          <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.7rem', color: 'rgba(var(--text-base), 0.55)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
             Daily Digest
           </span>
-          <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.65rem', color: 'rgba(240,237,230,0.35)', letterSpacing: '0.04em', textAlign: 'right' }}>
-            {digest.date}
-          </span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.65rem', color: 'rgba(var(--text-base), 0.35)', letterSpacing: '0.04em', textAlign: 'right' }}>
+              {digest.date}
+            </span>
+            <ThemeToggle />
+          </div>
         </div>
       </header>
 
       <main style={{ maxWidth: 720, margin: '0 auto', padding: 'clamp(32px, 6vw, 56px) clamp(20px, 5vw, 32px) 96px' }}>
         <section style={{ marginBottom: 'clamp(40px, 7vw, 64px)' }}>
-          <p style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.7rem', letterSpacing: '0.16em', color: 'rgba(240,237,230,0.35)', textTransform: 'uppercase', marginBottom: 14 }}>
+          <p style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.7rem', letterSpacing: '0.16em', color: 'rgba(var(--text-base), 0.35)', textTransform: 'uppercase', marginBottom: 14 }}>
             Today's edition
           </p>
           <h1 style={{
@@ -86,7 +97,7 @@ export default async function Home() {
           }}>
             {digest.date}
           </h1>
-          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '0.95rem', color: 'rgba(240,237,230,0.5)', fontWeight: 300, margin: 0 }}>
+          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '0.95rem', color: 'rgba(var(--text-base), 0.5)', fontWeight: 300, margin: 0 }}>
             {digest.storyCount} stories curated from 16 sources
           </p>
         </section>
@@ -95,41 +106,57 @@ export default async function Home() {
           marginBottom: 'clamp(48px, 8vw, 72px)',
           padding: 'clamp(20px, 4vw, 28px)',
           borderRadius: 10,
-          background: 'rgba(240,237,230,0.025)',
-          border: '0.5px solid rgba(240,237,230,0.06)',
+          background: 'var(--bg-elevated-low)',
+          border: '0.5px solid rgba(var(--text-base), 0.06)',
         }}>
-          <h2 style={{
-            fontFamily: "'DM Sans', sans-serif",
-            fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.14em',
-            color: 'rgba(240,237,230,0.55)', textTransform: 'uppercase',
-            margin: '0 0 18px',
-          }}>
-            In today's issue
-          </h2>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18, flexWrap: 'wrap', gap: 12 }}>
+            <h2 style={{
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.14em',
+              color: 'rgba(var(--text-base), 0.55)', textTransform: 'uppercase',
+              margin: 0,
+            }}>
+              In today's issue
+            </h2>
+            {legendLenses.length > 0 && (
+              <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', fontFamily: "'DM Mono', monospace", fontSize: '0.6rem', letterSpacing: '0.08em', color: 'rgba(var(--text-base), 0.45)', textTransform: 'uppercase' }}>
+                {legendLenses.map((l) => (
+                  <span key={l} style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+                    <span style={{ width: 7, height: 7, borderRadius: '50%', background: LENS_COLORS[l], display: 'inline-block' }} />
+                    {LENS_SHORT_LABELS[l]}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
           <ol style={{ listStyle: 'none', padding: 0, margin: 0 }}>
             {flatStories.map((story, i) => (
               <li key={story.anchor} style={{ marginBottom: i === flatStories.length - 1 ? 0 : 16 }}>
                 <a
                   href={`#${story.anchor}`}
-                  style={{ display: 'block', textDecoration: 'none', color: '#f0ede6' }}
+                  style={{ display: 'block', textDecoration: 'none', color: 'rgb(var(--text-base))' }}
                 >
                   <div style={{ display: 'flex', gap: 12, alignItems: 'baseline', flexWrap: 'wrap' }}>
-                    <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.7rem', color: 'rgba(240,237,230,0.4)', flexShrink: 0 }}>
+                    <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.7rem', color: 'rgba(var(--text-base), 0.4)', flexShrink: 0 }}>
                       {String(i + 1).padStart(2, '0')}
                     </span>
                     <span style={{ fontSize: '0.95rem', fontWeight: 500, lineHeight: 1.4, flex: '1 1 auto' }}>
                       {story.title}
                       {story.tags && story.tags.length > 0 && (
-                        <span style={{ display: 'inline-flex', flexWrap: 'wrap', gap: 4, marginLeft: 8, verticalAlign: '2px' }}>
+                        <span style={{ display: 'inline-flex', flexWrap: 'wrap', gap: 4, marginLeft: 8, verticalAlign: '1px' }}>
                           {story.tags.map((t) => (
-                            <span key={t} style={tagChipStyle}>{LENS_LABELS[t]}</span>
+                            <span
+                              key={t}
+                              title={LENS_LABELS[t]}
+                              style={{ width: 7, height: 7, borderRadius: '50%', background: LENS_COLORS[t], display: 'inline-block' }}
+                            />
                           ))}
                         </span>
                       )}
                     </span>
                   </div>
                   {story.tldr && (
-                    <p style={{ fontSize: '0.85rem', color: 'rgba(240,237,230,0.5)', fontWeight: 300, lineHeight: 1.5, margin: '4px 0 0 32px' }}>
+                    <p style={{ fontSize: '0.85rem', color: 'rgba(var(--text-base), 0.5)', fontWeight: 300, lineHeight: 1.5, margin: '4px 0 0 32px' }}>
                       {story.tldr}
                     </p>
                   )}
@@ -144,9 +171,9 @@ export default async function Home() {
             <h2 style={{
               fontFamily: "'DM Sans', sans-serif",
               fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.14em',
-              color: 'rgba(240,237,230,0.55)', textTransform: 'uppercase',
+              color: 'rgba(var(--text-base), 0.55)', textTransform: 'uppercase',
               margin: '0 0 28px', paddingBottom: 12,
-              borderBottom: '0.5px solid rgba(255,255,255,0.07)',
+              borderBottom: '0.5px solid rgba(var(--border-base), 0.07)',
             }}>
               {section.label}
             </h2>
@@ -157,7 +184,7 @@ export default async function Home() {
                 style={{
                   paddingBottom: idx < section.stories.length - 1 ? 'clamp(36px, 6vw, 56px)' : 0,
                   marginBottom: idx < section.stories.length - 1 ? 'clamp(36px, 6vw, 56px)' : 0,
-                  borderBottom: idx < section.stories.length - 1 ? '0.5px solid rgba(240,237,230,0.07)' : 'none',
+                  borderBottom: idx < section.stories.length - 1 ? '0.5px solid rgba(var(--text-base), 0.07)' : 'none',
                   scrollMarginTop: 80,
                 }}
               >
@@ -169,7 +196,7 @@ export default async function Home() {
                     fontFamily: "'DM Serif Display', serif",
                     fontSize: 'clamp(1.25rem, 3.5vw, 1.6rem)',
                     fontWeight: 400, lineHeight: 1.25, letterSpacing: '-0.01em',
-                    color: '#f0ede6', textDecoration: 'none',
+                    color: 'rgb(var(--text-base))', textDecoration: 'none',
                     display: 'inline-block', marginBottom: 8,
                   }}
                 >
@@ -179,7 +206,7 @@ export default async function Home() {
                   <p style={{
                     fontFamily: "'DM Mono', monospace",
                     fontSize: '0.65rem',
-                    color: 'rgba(240,237,230,0.4)',
+                    color: 'rgba(var(--text-base), 0.4)',
                     letterSpacing: '0.06em',
                     margin: 0,
                     textTransform: 'uppercase',
@@ -197,7 +224,7 @@ export default async function Home() {
                 {story.tldr && (
                   <p style={{
                     fontSize: 'clamp(0.95rem, 2.4vw, 1.05rem)',
-                    color: 'rgba(240,237,230,0.78)',
+                    color: 'rgba(var(--text-base), 0.78)',
                     fontWeight: 300, lineHeight: 1.65,
                     margin: '0 0 22px',
                   }}>
@@ -211,12 +238,12 @@ export default async function Home() {
                       style={{
                         marginBottom: 14,
                         fontSize: '0.95rem',
-                        color: 'rgba(240,237,230,0.65)',
+                        color: 'rgba(var(--text-base), 0.65)',
                         fontWeight: 300,
                         lineHeight: 1.7,
                       }}
                     >
-                      <strong style={{ fontWeight: 600, color: '#f0ede6' }}>
+                      <strong style={{ fontWeight: 600, color: 'rgb(var(--text-base))' }}>
                         {bullet.label}:
                       </strong>{' '}
                       {bullet.text}
@@ -228,14 +255,14 @@ export default async function Home() {
                     marginTop: 24,
                     paddingTop: 18,
                     paddingLeft: 16,
-                    borderTop: '0.5px solid rgba(240,237,230,0.08)',
-                    borderLeft: '2px solid rgba(240,237,230,0.25)',
+                    borderTop: '0.5px solid rgba(var(--text-base), 0.08)',
+                    borderLeft: '2px solid rgba(var(--text-base), 0.25)',
                   }}>
                     <p style={{
                       fontFamily: "'DM Mono', monospace",
                       fontSize: '0.6rem',
                       letterSpacing: '0.14em',
-                      color: 'rgba(240,237,230,0.5)',
+                      color: 'rgba(var(--text-base), 0.5)',
                       textTransform: 'uppercase',
                       margin: '0 0 8px',
                     }}>
@@ -243,7 +270,7 @@ export default async function Home() {
                     </p>
                     <p style={{
                       fontSize: '0.92rem',
-                      color: 'rgba(240,237,230,0.75)',
+                      color: 'rgba(var(--text-base), 0.75)',
                       fontWeight: 300,
                       lineHeight: 1.65,
                       margin: 0,
@@ -261,11 +288,11 @@ export default async function Home() {
         <footer style={{
           marginTop: 'clamp(48px, 8vw, 80px)',
           paddingTop: 24,
-          borderTop: '0.5px solid rgba(255,255,255,0.06)',
+          borderTop: '0.5px solid rgba(var(--border-base), 0.06)',
           textAlign: 'center',
           fontFamily: "'DM Mono', monospace",
           fontSize: '0.65rem',
-          color: 'rgba(240,237,230,0.3)',
+          color: 'rgba(var(--text-base), 0.3)',
           letterSpacing: '0.14em',
           textTransform: 'uppercase',
         }}>

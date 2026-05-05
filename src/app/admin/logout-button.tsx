@@ -14,8 +14,8 @@ export default function LogoutButton() {
       onClick={click}
       style={{
         background: 'none',
-        border: '0.5px solid rgba(240,237,230,0.15)',
-        color: 'rgba(240,237,230,0.7)',
+        border: '0.5px solid rgba(var(--text-base), 0.15)',
+        color: 'rgba(var(--text-base), 0.7)',
         padding: '6px 14px',
         borderRadius: 6,
         fontSize: '0.8rem',

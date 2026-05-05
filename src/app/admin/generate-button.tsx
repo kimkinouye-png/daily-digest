@@ -35,8 +35,8 @@ export default function GenerateButton() {
           padding: '10px 20px',
           borderRadius: 6,
           border: 'none',
-          background: busy ? 'rgba(240,237,230,0.08)' : '#f0ede6',
-          color: busy ? 'rgba(240,237,230,0.3)' : '#0e0e0e',
+          background: busy ? 'rgba(var(--text-base), 0.08)' : 'var(--accent)',
+          color: busy ? 'rgba(var(--text-base), 0.3)' : 'var(--accent-fg)',
           fontSize: '0.85rem',
           fontWeight: 500,
           fontFamily: "'DM Sans', sans-serif",
@@ -45,7 +45,7 @@ export default function GenerateButton() {
       >
         {busy ? 'Generating draft (about 30s)...' : 'Generate new draft'}
       </button>
-      {msg && <p style={{ marginTop: 12, fontSize: '0.85rem', color: 'rgba(240,237,230,0.5)' }}>{msg}</p>}
+      {msg && <p style={{ marginTop: 12, fontSize: '0.85rem', color: 'rgba(var(--text-base), 0.5)' }}>{msg}</p>}
     </div>
   )
 }
