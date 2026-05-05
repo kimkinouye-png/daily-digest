@@ -32,7 +32,7 @@ const themeStyles = `
     --bg-page: #faf8f3;
     --bg-elevated-low: rgba(42,40,38,0.035);
     --bg-elevated-high: rgba(42,40,38,0.06);
-    --text-base: 42, 40, 38;
+    --text-base: 20, 20, 22;
     --border-base: 0, 0, 0;
     --header-bg: rgba(250,248,243,0.92);
     --accent: #2a2826;
@@ -43,7 +43,7 @@ const themeStyles = `
   --bg-page: #faf8f3;
   --bg-elevated-low: rgba(42,40,38,0.035);
   --bg-elevated-high: rgba(42,40,38,0.06);
-  --text-base: 42, 40, 38;
+  --text-base: 20, 20, 22;
   --border-base: 0, 0, 0;
   --header-bg: rgba(250,248,243,0.92);
   --accent: #2a2826;

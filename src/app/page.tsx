@@ -15,7 +15,7 @@ const LENS_LABELS: Record<Lens, string> = {
   accessibility: 'Accessibility',
 }
 
-const tagChipStyle: React.CSSProperties = {
+const getTagChipStyle = (lens: Lens): React.CSSProperties => ({
   display: 'inline-block',
   padding: '2px 6px',
   fontFamily: "'DM Mono', monospace",
@@ -23,10 +23,10 @@ const tagChipStyle: React.CSSProperties = {
   fontWeight: 500,
   letterSpacing: '0.12em',
   color: 'rgba(var(--text-base), 0.7)',
-  border: '0.5px solid rgba(var(--text-base), 0.25)',
+  border: `0.5px solid ${LENS_COLORS[lens]}`,
   borderRadius: 3,
   textTransform: 'uppercase',
-}
+})
 
 export default async function Home() {
   const digest = await getLatestPublished()
@@ -97,7 +97,7 @@ export default async function Home() {
           }}>
             {digest.date}
           </h1>
-          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '0.95rem', color: 'rgba(var(--text-base), 0.5)', fontWeight: 300, margin: 0 }}>
+          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '1rem', color: 'rgba(var(--text-base), 0.5)', fontWeight: 300, margin: 0 }}>
             {digest.storyCount} stories curated from 16 sources
           </p>
         </section>
@@ -156,7 +156,7 @@ export default async function Home() {
                     </span>
                   </div>
                   {story.tldr && (
-                    <p style={{ fontSize: '0.85rem', color: 'rgba(var(--text-base), 0.5)', fontWeight: 300, lineHeight: 1.5, margin: '4px 0 0 32px' }}>
+                    <p style={{ fontSize: '0.9rem', color: 'rgba(var(--text-base), 0.5)', fontWeight: 300, lineHeight: 1.5, margin: '4px 0 0 32px' }}>
                       {story.tldr}
                     </p>
                   )}
@@ -216,7 +216,7 @@ export default async function Home() {
                   {story.tags && story.tags.length > 0 && (
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
                       {story.tags.map((t) => (
-                        <span key={t} style={tagChipStyle}>{LENS_LABELS[t]}</span>
+                        <span key={t} style={getTagChipStyle(t)}>{LENS_LABELS[t]}</span>
                       ))}
                     </div>
                   )}
@@ -237,7 +237,7 @@ export default async function Home() {
                       key={bi}
                       style={{
                         marginBottom: 14,
-                        fontSize: '0.95rem',
+                        fontSize: '1rem',
                         color: 'rgba(var(--text-base), 0.65)',
                         fontWeight: 300,
                         lineHeight: 1.7,
