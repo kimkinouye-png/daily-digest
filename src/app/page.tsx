@@ -97,6 +97,27 @@ export default async function Home() {
           }}>
             (⌐■_■)
           </p>
+          <p style={{
+            fontFamily: "'DM Serif Display', serif",
+            fontSize: 'clamp(1.4rem, 3.5vw, 1.9rem)',
+            fontWeight: 400,
+            color: 'rgb(var(--text-base))',
+            margin: '0 0 6px',
+            letterSpacing: '-0.01em',
+            lineHeight: 1.2,
+          }}>
+            Eyes on the chaos.
+          </p>
+          <p style={{
+            fontFamily: "'DM Sans', system-ui, sans-serif",
+            fontSize: 'clamp(0.9rem, 2vw, 1rem)',
+            fontWeight: 300,
+            color: 'rgba(var(--text-base), 0.65)',
+            margin: '0 0 24px',
+            lineHeight: 1.5,
+          }}>
+            For people who'd rather not read 16 RSS feeds.
+          </p>
           <p style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.7rem', letterSpacing: '0.16em', color: 'rgba(var(--text-base), 0.65)', textTransform: 'uppercase', marginBottom: 14 }}>
             Today's edition
           </p>
