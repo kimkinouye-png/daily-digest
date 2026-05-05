@@ -85,7 +85,7 @@ export default async function Home() {
       </header>
 
       <main style={{ maxWidth: 720, margin: '0 auto', padding: 'clamp(32px, 6vw, 56px) clamp(20px, 5vw, 32px) 96px' }}>
-        <section style={{ marginBottom: 'clamp(40px, 7vw, 64px)' }}>
+        <section style={{ marginBottom: 'clamp(28px, 4vw, 40px)' }}>
           <p style={{
             fontFamily: "'DM Sans', system-ui, sans-serif",
             fontWeight: 700,
@@ -113,12 +113,12 @@ export default async function Home() {
             fontSize: 'clamp(0.9rem, 2vw, 1rem)',
             fontWeight: 300,
             color: 'rgba(var(--text-base), 0.65)',
-            margin: '0 0 24px',
+            margin: '0 0 40px',
             lineHeight: 1.5,
           }}>
             For people who'd rather not read 16 RSS feeds.
           </p>
-          <p style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.7rem', letterSpacing: '0.16em', color: 'rgba(var(--text-base), 0.65)', textTransform: 'uppercase', marginBottom: 14 }}>
+          <p style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.7rem', letterSpacing: '0.16em', color: 'rgba(var(--text-base), 0.65)', textTransform: 'uppercase', marginBottom: 10 }}>
             Today's edition
           </p>
           <h1 style={{
@@ -168,14 +168,36 @@ export default async function Home() {
                   href={`#${story.anchor}`}
                   style={{ display: 'block', textDecoration: 'none', color: 'rgb(var(--text-base))' }}
                 >
-                  <div style={{ display: 'flex', gap: 12, alignItems: 'baseline', flexWrap: 'wrap' }}>
-                    <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.7rem', color: 'rgba(var(--text-base), 0.55)', flexShrink: 0 }}>
+                  <div style={{ display: 'flex', gap: 12, alignItems: 'baseline' }}>
+                    <span style={{
+                      fontFamily: "'DM Mono', monospace",
+                      fontSize: '0.7rem',
+                      color: 'rgba(var(--text-base), 0.55)',
+                      flexShrink: 0,
+                    }}>
                       {String(i + 1).padStart(2, '0')}
                     </span>
-                    <span style={{ fontSize: '0.95rem', fontWeight: 500, lineHeight: 1.4, flex: '1 1 auto' }}>
-                      {story.title}
+                    <div style={{
+                      flex: '1 1 auto',
+                      minWidth: 0,
+                      display: 'flex',
+                      alignItems: 'baseline',
+                      gap: 8,
+                    }}>
+                      <span style={{
+                        fontSize: '0.95rem',
+                        fontWeight: 500,
+                        lineHeight: 1.4,
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        flex: '1 1 auto',
+                        minWidth: 0,
+                      }}>
+                        {story.title}
+                      </span>
                       {story.tags && story.tags.length > 0 && (
-                        <span style={{ display: 'inline-flex', flexWrap: 'wrap', gap: 4, marginLeft: 8, verticalAlign: '1px' }}>
+                        <span style={{ display: 'inline-flex', flexWrap: 'nowrap', gap: 4, flexShrink: 0 }}>
                           {story.tags.map((t) => (
                             <span
                               key={t}
@@ -185,7 +207,7 @@ export default async function Home() {
                           ))}
                         </span>
                       )}
-                    </span>
+                    </div>
                   </div>
                   {story.tldr && (
                     <p style={{ fontSize: '0.9rem', color: 'rgba(var(--text-base), 0.5)', fontWeight: 300, lineHeight: 1.5, margin: '4px 0 0 32px' }}>
