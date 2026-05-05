@@ -4,7 +4,7 @@
 
 import type { FeedSource } from './feeds'
 
-export const VALID_LENSES = ['design', 'ethics', 'engineering', 'product', 'leadership', 'accessibility'] as const
+export const VALID_LENSES = ['design', 'ethics', 'product'] as const
 export type Lens = typeof VALID_LENSES[number]
 
 export interface DigestBullet {

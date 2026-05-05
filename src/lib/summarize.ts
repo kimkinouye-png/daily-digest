@@ -56,12 +56,9 @@ For each selected story, write:
 2. "bullets" — 3-4 bullets, each with a short LABEL (2-4 words, like a mini headline) and 1-2 sentences of TEXT. Good labels are specific to the bullet. Examples: "Agentic-first design", "Rollout", "The catch", "Why it matters", "Key numbers", "What's missing", "Bottom line".
 
 3. "tags" — array of zero or more lens tags from this fixed list, indicating which professional lenses this story is genuinely relevant to. Available lenses:
-   - "design": directly affects designers, design teams, design tools, design systems
-   - "ethics": raises ethical questions about AI, privacy, fairness, safety, manipulation
-   - "engineering": affects engineers, dev tools, infrastructure, technical workflows
-   - "product": affects product managers, product strategy, roadmap, prioritization
-   - "leadership": relevant to managing teams, org design, change management, hiring
-   - "accessibility": affects accessibility, inclusive design, assistive technology
+   - "design": directly affects designers, design teams, design tools, design systems, designer workflows
+   - "ethics": raises ethical questions about AI, privacy, fairness, safety, manipulation, bias, governance
+   - "product": affects product managers, product strategy, roadmap, prioritization, product decisions
 
    BE SELECTIVE. Only tag a lens when there's a real, specific connection a leader in that domain would care about. Most stories will have 0-2 tags. A few will have 3+. Some will have 0 (e.g. pure geopolitics or model release without role-specific implications).
 
@@ -83,7 +80,7 @@ Return valid JSON only, no markdown wrapping. Use this exact structure:
         { "label": "Key change", "text": "1-2 sentence explanation." },
         { "label": "Rollout", "text": "1-2 sentence explanation." }
       ],
-      "tags": ["design", "leadership"],
+      "tags": ["design", "product"],
       "implication": { "lens": "design", "text": "Concrete sentence about what this means for designers specifically." }
     }
   ]

@@ -18,10 +18,7 @@ const CATEGORIES: { value: FeedSource['category']; label: string }[] = [
 const LENS_LABELS: Record<Lens, string> = {
   design: 'Design',
   ethics: 'Ethics',
-  engineering: 'Engineering',
   product: 'Product',
-  leadership: 'Leadership',
-  accessibility: 'Accessibility',
 }
 
 function flatten(d: StoredDigest): DigestStory[] {

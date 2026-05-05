@@ -9,10 +9,7 @@ import Link from 'next/link'
 const LENS_LABELS: Record<Lens, string> = {
   design: 'Design',
   ethics: 'Ethics',
-  engineering: 'Engineering',
   product: 'Product',
-  leadership: 'Leadership',
-  accessibility: 'Accessibility',
 }
 
 const getTagChipStyle = (lens: Lens): React.CSSProperties => ({
@@ -43,7 +40,7 @@ export default function DigestView({ digest, showHeroPersonality = true }: Props
 
   const usedLenses = new Set<Lens>()
   flatStories.forEach((s) => s.tags?.forEach((t) => usedLenses.add(t)))
-  const VALID_LENSES_ORDERED: Lens[] = ['design', 'ethics', 'engineering', 'product', 'leadership', 'accessibility']
+  const VALID_LENSES_ORDERED: Lens[] = ['design', 'ethics', 'product']
   const legendLenses = VALID_LENSES_ORDERED.filter((l) => usedLenses.has(l))
 
   return (
