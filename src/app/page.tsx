@@ -86,6 +86,17 @@ export default async function Home() {
 
       <main style={{ maxWidth: 720, margin: '0 auto', padding: 'clamp(32px, 6vw, 56px) clamp(20px, 5vw, 32px) 96px' }}>
         <section style={{ marginBottom: 'clamp(40px, 7vw, 64px)' }}>
+          <p style={{
+            fontFamily: "'DM Sans', system-ui, sans-serif",
+            fontWeight: 700,
+            fontSize: 'clamp(1.4rem, 3.5vw, 1.9rem)',
+            color: 'rgb(var(--text-base))',
+            margin: '0 0 18px',
+            letterSpacing: '0.04em',
+            lineHeight: 1,
+          }}>
+            (⌐■_■)
+          </p>
           <p style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.7rem', letterSpacing: '0.16em', color: 'rgba(var(--text-base), 0.65)', textTransform: 'uppercase', marginBottom: 14 }}>
             Today's edition
           </p>
