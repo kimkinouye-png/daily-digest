@@ -166,9 +166,14 @@ export default function EditorClient({ digest }: { digest: StoredDigest }) {
     <div style={{ minHeight: '100vh', padding: '40px 24px' }}>
       <div style={{ maxWidth: 760, margin: '0 auto' }}>
         <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32, gap: 12, flexWrap: 'wrap' }}>
-          <Link href="/admin" style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.75rem', color: 'rgba(var(--text-base), 0.5)', textDecoration: 'none' }}>
-            ← Drafts
-          </Link>
+          <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+            <Link href="/admin" style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.75rem', color: 'rgba(var(--text-base), 0.5)', textDecoration: 'none' }}>
+              ← Drafts
+            </Link>
+            <Link href="/" target="_blank" rel="noopener noreferrer" style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.75rem', color: 'rgba(var(--text-base), 0.5)', textDecoration: 'none' }}>
+              View site ↗
+            </Link>
+          </div>
           <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
             <ThemeToggle />
             {msg && <span style={{ fontSize: '0.8rem', color: 'rgba(var(--text-base), 0.55)' }}>{msg}</span>}
