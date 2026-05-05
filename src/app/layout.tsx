@@ -15,6 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap"
           rel="stylesheet"
         />
+        <style dangerouslySetInnerHTML={{ __html: `html { scroll-behavior: smooth; } body { -webkit-font-smoothing: antialiased; }` }} />
       </head>
       <body style={{ margin: 0, fontFamily: "'DM Sans', system-ui, sans-serif", background: '#0e0e0e', color: '#f0ede6' }}>
         {children}
