@@ -122,7 +122,7 @@ export default async function Home() {
               <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', fontFamily: "'DM Mono', monospace", fontSize: '0.6rem', letterSpacing: '0.08em', color: 'rgba(var(--text-base), 0.45)', textTransform: 'uppercase' }}>
                 {legendLenses.map((l) => (
                   <span key={l} style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
-                    <span style={{ width: 7, height: 7, borderRadius: '50%', background: LENS_COLORS[l], display: 'inline-block' }} />
+                    <span style={{ width: 7, height: 7, borderRadius: '50%', background: LENS_COLORS[l], display: 'inline-block', border: '0.5px solid rgba(var(--text-base), 0.18)' }} />
                     {LENS_SHORT_LABELS[l]}
                   </span>
                 ))}
@@ -148,7 +148,7 @@ export default async function Home() {
                             <span
                               key={t}
                               title={LENS_LABELS[t]}
-                              style={{ width: 7, height: 7, borderRadius: '50%', background: LENS_COLORS[t], display: 'inline-block' }}
+                              style={{ width: 7, height: 7, borderRadius: '50%', background: LENS_COLORS[t], display: 'inline-block', border: '0.5px solid rgba(var(--text-base), 0.18)' }}
                             />
                           ))}
                         </span>
@@ -256,13 +256,13 @@ export default async function Home() {
                     paddingTop: 18,
                     paddingLeft: 16,
                     borderTop: '0.5px solid rgba(var(--text-base), 0.08)',
-                    borderLeft: '2px solid rgba(var(--text-base), 0.25)',
+                    borderLeft: `2px solid ${LENS_COLORS[story.implication.lens]}`,
                   }}>
                     <p style={{
                       fontFamily: "'DM Mono', monospace",
                       fontSize: '0.6rem',
                       letterSpacing: '0.14em',
-                      color: 'rgba(var(--text-base), 0.5)',
+                      color: LENS_COLORS[story.implication.lens],
                       textTransform: 'uppercase',
                       margin: '0 0 8px',
                     }}>
