@@ -16,7 +16,6 @@ export interface DigestStory {
   category: FeedSource['category']
   tldr: string
   bullets: DigestBullet[]
-  designRelevance?: boolean
   designImplication?: string
 }
 
@@ -61,8 +60,7 @@ Skip any category if there are no noteworthy stories for it today.
 For each selected story, write:
 1. "tldr" — one short sentence (10-15 words) that captures the essence. Goes in the top-of-page preview.
 2. "bullets" — 3-4 bullets, each with a short LABEL (2-4 words, like a mini headline) and 1-2 sentences of TEXT. Good labels are specific to the bullet. Examples: "Agentic-first design", "Rollout", "The catch", "Why it matters", "Key numbers", "What's missing", "Bottom line".
-3. "designRelevance" — boolean. Is this story directly useful for a Design Operations leader (someone managing design teams, design systems, AI tools used by designers, cross-functional design strategy, design hiring, design org structure)? BE SELECTIVE. Set true only when there's a real, specific connection a design ops leader would care about. Most general AI infrastructure or pure business strategy stories should be false. Most Product & UX stories will be true. AI stories about tools that affect designer workflows (Figma, image generation, design assistants) should be true. AI safety news, geopolitics, model releases without design implications should be false.
-4. "designImplication" — string, ONLY include when designRelevance is true. One or two concrete sentences explaining what this story means for design teams or design operations specifically. Be specific and useful — not generic platitudes. Bad: "this could change how design teams work in the future." Good: "Design teams currently piloting Figma's AI features should anticipate new legal review cycles before any enterprise rollout."
+3. "designImplication" — string, OPTIONAL. Include ONLY when this story has a real, specific connection a Design Operations leader would care about. Design ops leaders care about: managing design teams, design systems, AI tools used by designers (Figma, image gen, design assistants), cross-functional design strategy, design hiring, design org structure, design processes, designer workflow changes. BE SELECTIVE. Most general AI infrastructure or pure business strategy stories should not have this field. AI safety news, geopolitics, or model releases without design implications should not have it. When you do include it, write 1-2 concrete sentences explaining what this means for design teams or design operations specifically. Be useful and specific — not generic platitudes. Bad: "this could change how design teams work in the future." Good: "Design teams currently piloting Figma's AI features should anticipate new legal review cycles before any enterprise rollout."
 
 Tone: conversational, smart, direct. Like briefing a colleague over coffee. No hype, no filler, no marketing language.
 
@@ -80,8 +78,7 @@ Return valid JSON only, no markdown wrapping. Use this exact structure:
         { "label": "Key change", "text": "1-2 sentence explanation." },
         { "label": "Rollout", "text": "1-2 sentence explanation." }
       ],
-      "designRelevance": true,
-      "designImplication": "Concrete sentence about what this means for design ops."
+      "designImplication": "Concrete sentence about what this means for design ops. Omit this field entirely when not applicable."
     }
   ]
 }

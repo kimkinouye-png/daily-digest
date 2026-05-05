@@ -98,7 +98,7 @@ export default async function Home() {
                     </span>
                     <span style={{ fontSize: '0.95rem', fontWeight: 500, lineHeight: 1.4, flex: '1 1 auto' }}>
                       {story.title}
-                      {story.designRelevance && (
+                      {story.designImplication && (
                         <span style={{
                           display: 'inline-block',
                           marginLeft: 8,

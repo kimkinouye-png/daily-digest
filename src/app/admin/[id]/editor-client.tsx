@@ -237,31 +237,16 @@ export default function EditorClient({ digest }: { digest: StoredDigest }) {
               </button>
             </div>
 
-            {/* Design ops fields */}
+            {/* Design ops implication */}
             <div style={{ marginTop: 14, padding: 14, borderRadius: 6, border: '0.5px dashed rgba(240,237,230,0.12)', background: 'rgba(240,237,230,0.01)' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', marginBottom: story.designRelevance ? 12 : 0 }}>
-                <input
-                  type="checkbox"
-                  checked={!!story.designRelevance}
-                  onChange={(e) => updateStory(i, { designRelevance: e.target.checked })}
-                  style={{ accentColor: '#f0ede6', cursor: 'pointer' }}
-                />
-                <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.65rem', letterSpacing: '0.1em', color: 'rgba(240,237,230,0.6)', textTransform: 'uppercase' }}>
-                  Design-ops relevant
-                </span>
-              </label>
-              {story.designRelevance && (
-                <div>
-                  <label style={labelStyle}>For design ops (1-2 sentences — appears below the bullets)</label>
-                  <textarea
-                    value={story.designImplication || ''}
-                    onChange={(e) => updateStory(i, { designImplication: e.target.value })}
-                    placeholder="What this means for design teams or design operations specifically."
-                    rows={2}
-                    style={{ ...inputStyle, fontFamily: "'DM Sans', sans-serif", resize: 'vertical' }}
-                  />
-                </div>
-              )}
+              <label style={labelStyle}>For design ops (optional — leave blank if not relevant)</label>
+              <textarea
+                value={story.designImplication || ''}
+                onChange={(e) => updateStory(i, { designImplication: e.target.value || undefined })}
+                placeholder="What this means for design teams or design operations specifically. Leave empty if no clear connection."
+                rows={2}
+                style={{ ...inputStyle, fontFamily: "'DM Sans', sans-serif", resize: 'vertical' }}
+              />
             </div>
 
             <div style={{ marginTop: 18, paddingTop: 14, borderTop: '0.5px solid rgba(240,237,230,0.06)', textAlign: 'right' }}>
