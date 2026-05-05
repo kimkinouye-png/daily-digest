@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { updateDigest, getDigest } from '@/lib/store'
 import { CATEGORY_LABELS, type FeedSource } from '@/lib/feeds'
 import type { DigestStory } from '@/lib/summarize'
@@ -28,5 +29,9 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
 
   const updated = await updateDigest(params.id, patch)
   if (!updated) return NextResponse.json({ error: 'Not found' }, { status: 404 })
+
+  revalidatePath('/admin')
+  revalidatePath(`/admin/${params.id}`)
+
   return NextResponse.json(updated)
 }
