@@ -12,7 +12,7 @@ export default async function Home() {
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
         <main style={{ maxWidth: 480, textAlign: 'center' }}>
           <p style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.7rem', letterSpacing: '0.18em', color: 'rgba(var(--text-base), 0.3)', textTransform: 'uppercase', marginBottom: 24 }}>
-            Daily Digest
+            Eyes on the Chaos
           </p>
           <h1 style={{ fontFamily: "'DM Serif Display', serif", fontSize: 'clamp(1.8rem, 5vw, 2.5rem)', fontWeight: 400, marginBottom: 16 }}>
             No edition yet

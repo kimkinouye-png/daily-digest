@@ -19,7 +19,7 @@ export default async function ArchivePage() {
       }}>
         <div style={{ maxWidth: 720, margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 16 }}>
           <Link href="/" style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.7rem', color: 'rgba(var(--text-base), 0.55)', letterSpacing: '0.12em', textTransform: 'uppercase', textDecoration: 'none' }}>
-            ← Daily Digest
+            ← Eyes on the Chaos
           </Link>
           <ThemeToggle />
         </div>

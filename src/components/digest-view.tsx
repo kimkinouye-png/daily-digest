@@ -58,7 +58,7 @@ export default function DigestView({ digest, showHeroPersonality = true }: Props
       }}>
         <div style={{ maxWidth: 720, margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 16 }}>
           <Link href="/" style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.7rem', color: 'rgba(var(--text-base), 0.55)', letterSpacing: '0.12em', textTransform: 'uppercase', textDecoration: 'none' }}>
-            Daily Digest
+            Eyes on the Chaos
           </Link>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.65rem', color: 'rgba(var(--text-base), 0.55)', letterSpacing: '0.04em', textAlign: 'right' }}>
@@ -86,24 +86,25 @@ export default function DigestView({ digest, showHeroPersonality = true }: Props
               </p>
               <p style={{
                 fontFamily: "'DM Serif Display', serif",
-                fontSize: 'clamp(1.4rem, 3.5vw, 1.9rem)',
+                fontSize: 'clamp(1.8rem, 5vw, 2.6rem)',
                 fontWeight: 400,
                 color: 'rgb(var(--text-base))',
-                margin: '0 0 6px',
+                margin: '0 0 14px',
                 letterSpacing: '-0.01em',
-                lineHeight: 1.2,
+                lineHeight: 1.15,
               }}>
-                Eyes on the chaos.
+                Eyes on the Chaos
               </p>
               <p style={{
                 fontFamily: "'DM Sans', system-ui, sans-serif",
-                fontSize: 'clamp(0.9rem, 2vw, 1rem)',
+                fontSize: 'clamp(0.95rem, 2vw, 1.05rem)',
                 fontWeight: 300,
                 color: 'rgba(var(--text-base), 0.65)',
                 margin: '0 0 40px',
-                lineHeight: 1.5,
+                lineHeight: 1.6,
+                maxWidth: 520,
               }}>
-                For people who'd rather not read 16 RSS feeds.
+                The day in AI, design, product, and ethics. For people who'd rather not read 16 RSS feeds.
               </p>
             </>
           )}

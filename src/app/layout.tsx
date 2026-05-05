@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Daily Digest',
-  description: 'AI-curated daily digest of AI, product, and strategy news',
+  title: 'Eyes on the Chaos',
+  description: "A daily digest of AI, design, product, and ethics. For people who'd rather not read 16 RSS feeds.",
 }
 
 const themeInitScript = `

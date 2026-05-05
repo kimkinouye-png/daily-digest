@@ -24,7 +24,7 @@ export default function SourcesPage() {
       }}>
         <div style={{ maxWidth: 720, margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 16 }}>
           <Link href="/" style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.7rem', color: 'rgba(var(--text-base), 0.55)', letterSpacing: '0.12em', textTransform: 'uppercase', textDecoration: 'none' }}>
-            ← Daily Digest
+            ← Eyes on the Chaos
           </Link>
           <ThemeToggle />
         </div>
@@ -38,7 +38,7 @@ export default function SourcesPage() {
           Where this comes from
         </h1>
         <p style={{ fontSize: '1rem', color: 'rgba(var(--text-base), 0.65)', fontWeight: 300, margin: '0 0 48px', lineHeight: 1.6 }}>
-          Daily Digest pulls from these {FEEDS.length} RSS feeds, then a human editor curates and writes the synthesis. Stories are grouped by category and tagged by lens.
+          Eyes on the Chaos pulls from these {FEEDS.length} RSS feeds, then a human editor curates and writes the synthesis. Stories are grouped by category and tagged by lens.
         </p>
 
         {grouped.map((g) => (
