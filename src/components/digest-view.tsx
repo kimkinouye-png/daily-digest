@@ -163,9 +163,9 @@ export default function DigestView({ digest, showHeroPersonality = true }: Props
                       <span style={{ fontSize: '0.95rem', fontWeight: 500, lineHeight: 1.4, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', flex: '1 1 auto', minWidth: 0 }}>
                         {story.title}
                       </span>
-                      {story.tags && story.tags.length > 0 && (
+                      {story.tags && story.tags.filter((t) => t in LENS_COLORS).length > 0 && (
                         <span style={{ display: 'inline-flex', flexWrap: 'nowrap', gap: 4, flexShrink: 0 }}>
-                          {story.tags.map((t) => (
+                          {story.tags.filter((t) => t in LENS_COLORS).map((t) => (
                             <span key={t} title={LENS_LABELS[t]} style={{ width: 7, height: 7, borderRadius: '50%', background: LENS_COLORS[t], display: 'inline-block', border: '0.5px solid rgba(var(--text-base), 0.18)' }} />
                           ))}
                         </span>
@@ -221,9 +221,9 @@ export default function DigestView({ digest, showHeroPersonality = true }: Props
                   }}>
                     {story.source}
                   </p>
-                  {story.tags && story.tags.length > 0 && (
+                  {story.tags && story.tags.filter((t) => t in LENS_COLORS).length > 0 && (
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
-                      {story.tags.map((t) => (
+                      {story.tags.filter((t) => t in LENS_COLORS).map((t) => (
                         <span key={t} style={getTagChipStyle(t)}>{LENS_LABELS[t]}</span>
                       ))}
                     </div>
@@ -249,7 +249,7 @@ export default function DigestView({ digest, showHeroPersonality = true }: Props
                     </li>
                   ))}
                 </ul>
-                {story.implication && (
+                {story.implication && story.implication.lens in LENS_COLORS && (
                   <div style={{
                     marginTop: 24,
                     paddingTop: 18,
