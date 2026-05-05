@@ -1,6 +1,29 @@
 import { getLatestPublished } from '@/lib/store'
+import type { Lens } from '@/lib/summarize'
 
 export const dynamic = 'force-dynamic'
+
+const LENS_LABELS: Record<Lens, string> = {
+  design: 'Design',
+  ethics: 'Ethics',
+  engineering: 'Engineering',
+  product: 'Product',
+  leadership: 'Leadership',
+  accessibility: 'Accessibility',
+}
+
+const tagChipStyle: React.CSSProperties = {
+  display: 'inline-block',
+  padding: '2px 6px',
+  fontFamily: "'DM Mono', monospace",
+  fontSize: '0.6rem',
+  fontWeight: 500,
+  letterSpacing: '0.12em',
+  color: 'rgba(240,237,230,0.7)',
+  border: '0.5px solid rgba(240,237,230,0.25)',
+  borderRadius: 3,
+  textTransform: 'uppercase',
+}
 
 export default async function Home() {
   const digest = await getLatestPublished()
@@ -88,9 +111,7 @@ export default async function Home() {
               <li key={story.anchor} style={{ marginBottom: i === flatStories.length - 1 ? 0 : 16 }}>
                 <a
                   href={`#${story.anchor}`}
-                  style={{
-                    display: 'block', textDecoration: 'none', color: '#f0ede6',
-                  }}
+                  style={{ display: 'block', textDecoration: 'none', color: '#f0ede6' }}
                 >
                   <div style={{ display: 'flex', gap: 12, alignItems: 'baseline', flexWrap: 'wrap' }}>
                     <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.7rem', color: 'rgba(240,237,230,0.4)', flexShrink: 0 }}>
@@ -98,22 +119,11 @@ export default async function Home() {
                     </span>
                     <span style={{ fontSize: '0.95rem', fontWeight: 500, lineHeight: 1.4, flex: '1 1 auto' }}>
                       {story.title}
-                      {story.designImplication && (
-                        <span style={{
-                          display: 'inline-block',
-                          marginLeft: 8,
-                          padding: '2px 6px',
-                          fontFamily: "'DM Mono', monospace",
-                          fontSize: '0.55rem',
-                          fontWeight: 500,
-                          letterSpacing: '0.14em',
-                          color: 'rgba(240,237,230,0.7)',
-                          border: '0.5px solid rgba(240,237,230,0.25)',
-                          borderRadius: 3,
-                          textTransform: 'uppercase',
-                          verticalAlign: '2px',
-                        }}>
-                          Design
+                      {story.tags && story.tags.length > 0 && (
+                        <span style={{ display: 'inline-flex', flexWrap: 'wrap', gap: 4, marginLeft: 8, verticalAlign: '2px' }}>
+                          {story.tags.map((t) => (
+                            <span key={t} style={tagChipStyle}>{LENS_LABELS[t]}</span>
+                          ))}
                         </span>
                       )}
                     </span>
@@ -165,16 +175,25 @@ export default async function Home() {
                 >
                   {story.title}
                 </a>
-                <p style={{
-                  fontFamily: "'DM Mono', monospace",
-                  fontSize: '0.65rem',
-                  color: 'rgba(240,237,230,0.4)',
-                  letterSpacing: '0.06em',
-                  margin: '0 0 18px',
-                  textTransform: 'uppercase',
-                }}>
-                  {story.source}
-                </p>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, margin: '0 0 18px', flexWrap: 'wrap' }}>
+                  <p style={{
+                    fontFamily: "'DM Mono', monospace",
+                    fontSize: '0.65rem',
+                    color: 'rgba(240,237,230,0.4)',
+                    letterSpacing: '0.06em',
+                    margin: 0,
+                    textTransform: 'uppercase',
+                  }}>
+                    {story.source}
+                  </p>
+                  {story.tags && story.tags.length > 0 && (
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+                      {story.tags.map((t) => (
+                        <span key={t} style={tagChipStyle}>{LENS_LABELS[t]}</span>
+                      ))}
+                    </div>
+                  )}
+                </div>
                 {story.tldr && (
                   <p style={{
                     fontSize: 'clamp(0.95rem, 2.4vw, 1.05rem)',
@@ -204,7 +223,7 @@ export default async function Home() {
                     </li>
                   ))}
                 </ul>
-                {story.designImplication && (
+                {story.implication && (
                   <div style={{
                     marginTop: 24,
                     paddingTop: 18,
@@ -220,7 +239,7 @@ export default async function Home() {
                       textTransform: 'uppercase',
                       margin: '0 0 8px',
                     }}>
-                      For design ops
+                      For {LENS_LABELS[story.implication.lens].toLowerCase()}
                     </p>
                     <p style={{
                       fontSize: '0.92rem',
@@ -230,7 +249,7 @@ export default async function Home() {
                       margin: 0,
                       fontStyle: 'italic',
                     }}>
-                      {story.designImplication}
+                      {story.implication.text}
                     </p>
                   </div>
                 )}

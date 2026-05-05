@@ -4,7 +4,8 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import type { StoredDigest } from '@/lib/store'
-import type { DigestStory, DigestBullet } from '@/lib/summarize'
+import type { DigestStory, DigestBullet, Lens } from '@/lib/summarize'
+import { VALID_LENSES } from '@/lib/summarize'
 import type { FeedSource } from '@/lib/feeds'
 
 const CATEGORIES: { value: FeedSource['category']; label: string }[] = [
@@ -12,6 +13,15 @@ const CATEGORIES: { value: FeedSource['category']; label: string }[] = [
   { value: 'product-ux', label: 'Product & UX' },
   { value: 'business-strategy', label: 'Business & Strategy' },
 ]
+
+const LENS_LABELS: Record<Lens, string> = {
+  design: 'Design',
+  ethics: 'Ethics',
+  engineering: 'Engineering',
+  product: 'Product',
+  leadership: 'Leadership',
+  accessibility: 'Accessibility',
+}
 
 function flatten(d: StoredDigest): DigestStory[] {
   return d.sections.flatMap((s) => s.stories)
@@ -77,6 +87,39 @@ export default function EditorClient({ digest }: { digest: StoredDigest }) {
   const removeStory = (i: number) => {
     if (!confirm('Remove this story from the digest?')) return
     setStories((prev) => prev.filter((_, idx) => idx !== i))
+  }
+
+  const toggleTag = (storyIdx: number, lens: Lens) => {
+    setStories((prev) =>
+      prev.map((s, idx) => {
+        if (idx !== storyIdx) return s
+        const current = s.tags || []
+        const has = current.includes(lens)
+        const next = has ? current.filter((t) => t !== lens) : [...current, lens]
+        return { ...s, tags: next.length > 0 ? next : undefined }
+      }),
+    )
+  }
+
+  const updateImplicationText = (storyIdx: number, text: string) => {
+    setStories((prev) =>
+      prev.map((s, idx) => {
+        if (idx !== storyIdx) return s
+        if (!text.trim()) return { ...s, implication: undefined }
+        const lens = s.implication?.lens || (s.tags && s.tags[0]) || 'design'
+        return { ...s, implication: { lens, text } }
+      }),
+    )
+  }
+
+  const updateImplicationLens = (storyIdx: number, lens: Lens) => {
+    setStories((prev) =>
+      prev.map((s, idx) => {
+        if (idx !== storyIdx) return s
+        if (!s.implication) return s
+        return { ...s, implication: { ...s.implication, lens } }
+      }),
+    )
   }
 
   const save = async () => {
@@ -237,16 +280,57 @@ export default function EditorClient({ digest }: { digest: StoredDigest }) {
               </button>
             </div>
 
-            {/* Design ops implication */}
+            {/* Tags + implication */}
             <div style={{ marginTop: 14, padding: 14, borderRadius: 6, border: '0.5px dashed rgba(240,237,230,0.12)', background: 'rgba(240,237,230,0.01)' }}>
-              <label style={labelStyle}>For design ops (optional — leave blank if not relevant)</label>
-              <textarea
-                value={story.designImplication || ''}
-                onChange={(e) => updateStory(i, { designImplication: e.target.value || undefined })}
-                placeholder="What this means for design teams or design operations specifically. Leave empty if no clear connection."
-                rows={2}
-                style={{ ...inputStyle, fontFamily: "'DM Sans', sans-serif", resize: 'vertical' }}
-              />
+              <label style={labelStyle}>Lens tags (which roles is this relevant to?)</label>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 16 }}>
+                {VALID_LENSES.map((lens) => {
+                  const active = story.tags?.includes(lens)
+                  return (
+                    <button
+                      key={lens}
+                      onClick={() => toggleTag(i, lens)}
+                      style={{
+                        padding: '4px 10px',
+                        borderRadius: 4,
+                        border: '0.5px solid ' + (active ? 'rgba(240,237,230,0.5)' : 'rgba(240,237,230,0.15)'),
+                        background: active ? 'rgba(240,237,230,0.08)' : 'transparent',
+                        color: active ? '#f0ede6' : 'rgba(240,237,230,0.55)',
+                        fontFamily: "'DM Mono', monospace",
+                        fontSize: '0.7rem',
+                        letterSpacing: '0.06em',
+                        textTransform: 'uppercase',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      {LENS_LABELS[lens]}
+                    </button>
+                  )
+                })}
+              </div>
+
+              <label style={labelStyle}>Implication (optional — leave blank if nothing concrete to add)</label>
+              <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: 8, alignItems: 'start' }}>
+                <select
+                  value={story.implication?.lens || (story.tags && story.tags[0]) || 'design'}
+                  onChange={(e) => updateImplicationLens(i, e.target.value as Lens)}
+                  disabled={!story.implication}
+                  style={{ ...inputStyle, width: 'auto', fontFamily: "'DM Mono', monospace", fontSize: '0.75rem', padding: '8px 10px' }}
+                >
+                  {VALID_LENSES.map((lens) => (
+                    <option key={lens} value={lens} style={{ background: '#0e0e0e' }}>
+                      For {LENS_LABELS[lens].toLowerCase()}
+                    </option>
+                  ))}
+                </select>
+                <textarea
+                  value={story.implication?.text || ''}
+                  onChange={(e) => updateImplicationText(i, e.target.value)}
+                  placeholder="What this means for the lens above. Leave empty to omit entirely."
+                  rows={2}
+                  style={{ ...inputStyle, fontFamily: "'DM Sans', sans-serif", resize: 'vertical' }}
+                />
+              </div>
             </div>
 
             <div style={{ marginTop: 18, paddingTop: 14, borderTop: '0.5px solid rgba(240,237,230,0.06)', textAlign: 'right' }}>
