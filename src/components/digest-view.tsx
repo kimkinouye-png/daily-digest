@@ -38,6 +38,9 @@ export default function DigestView({ digest, showHeroPersonality = true }: Props
   }))
   const flatStories = sectionsWithAnchors.flatMap((s) => s.stories)
 
+  // TEMP DEBUG: remove after diagnosing 404 link bug
+  console.log('STORY LINKS DEBUG:', sectionsWithAnchors.flatMap((s) => s.stories.map((st) => ({ title: st.title.slice(0, 40), source: st.source, link: st.link }))))
+
   const usedLenses = new Set<Lens>()
   flatStories.forEach((s) => s.tags?.forEach((t) => usedLenses.add(t)))
   const VALID_LENSES_ORDERED: Lens[] = ['design', 'ethics', 'product']
