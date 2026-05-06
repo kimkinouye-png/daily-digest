@@ -31,7 +31,7 @@ export async function buildDigest(items: FeedItem[]): Promise<Digest> {
   })
 
   const itemList = items
-    .map((item, i) => `[${i + 1}] "${item.title}" — ${item.source} (${item.category})\n${item.snippet}`)
+    .map((item, i) => `id=${i} | "${item.title}" — ${item.source} (${item.category})\n${item.snippet}`)
     .join('\n\n')
 
   const response = await client.messages.create({
@@ -66,13 +66,15 @@ For each selected story, write:
 
 Tone: conversational, smart, direct. Like briefing a colleague over coffee. No hype, no filler, no marketing language.
 
-Return valid JSON only, no markdown wrapping. Use this exact structure:
+Return valid JSON only, no markdown wrapping. The "id" field MUST be the exact integer id from the input above (e.g. id=7 → "id": 7). Do not invent or modify ids. Do not include a "link" field — it will be added later from the id.
+
+Use this exact structure:
 {
   "stories": [
     {
+      "id": 7,
       "title": "Article title",
       "source": "Publication name",
-      "link": "URL",
       "category": "ai" | "product-ux" | "business-strategy",
       "tldr": "One short sentence for the preview",
       "bullets": [
@@ -94,28 +96,47 @@ ${itemList}`,
   })
 
   const text = response.content[0].type === 'text' ? response.content[0].text : ''
-  let stories: DigestStory[] = []
+  // Claude returns stories WITHOUT a link field; we inject the real link from
+  // items[id] below. Anything else on the object is passed through.
+  type RawStory = Omit<DigestStory, 'link'> & { id: number }
+  let rawStories: RawStory[] = []
 
   try {
     const parsed = JSON.parse(text)
-    stories = parsed.stories || []
+    rawStories = parsed.stories || []
   } catch {
     const match = text.match(/\{[\s\S]*\}/)
     if (match) {
       const parsed = JSON.parse(match[0])
-      stories = parsed.stories || []
+      rawStories = parsed.stories || []
     } else {
       throw new Error('Failed to parse Claude response as JSON')
     }
   }
 
-  // Sanitize: ensure tags are valid, implication has a valid lens
-  stories = stories.map((s) => {
+  // Sanitize: rejoin link from id, validate tags/implication, drop stories
+  // whose id doesn't map to a real input item.
+  let stories: DigestStory[] = rawStories.flatMap((s) => {
+    const id = typeof s.id === 'number' ? s.id : Number(s.id)
+    const sourceItem = Number.isInteger(id) ? items[id] : undefined
+    if (!sourceItem || !sourceItem.link) {
+      console.warn(`Dropping story with invalid id=${s.id}: "${s.title}"`)
+      return []
+    }
     const cleanTags = (s.tags || []).filter((t): t is Lens => (VALID_LENSES as readonly string[]).includes(t))
     const cleanImplication = s.implication && (VALID_LENSES as readonly string[]).includes(s.implication.lens) && s.implication.text
       ? s.implication
       : undefined
-    return { ...s, tags: cleanTags.length > 0 ? cleanTags : undefined, implication: cleanImplication }
+    return [{
+      title: s.title,
+      source: s.source,
+      link: sourceItem.link,
+      category: s.category,
+      tldr: s.tldr,
+      bullets: s.bullets,
+      tags: cleanTags.length > 0 ? cleanTags : undefined,
+      implication: cleanImplication,
+    }]
   })
 
   const categoryOrder: FeedSource['category'][] = ['ai', 'product-ux', 'business-strategy']
