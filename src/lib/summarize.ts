@@ -36,7 +36,7 @@ export async function buildDigest(items: FeedItem[]): Promise<Digest> {
 
   const response = await client.messages.create({
     model: 'claude-sonnet-5',
-    max_tokens: 8000,
+    max_tokens: 24000,
     messages: [
       {
         role: 'user',
