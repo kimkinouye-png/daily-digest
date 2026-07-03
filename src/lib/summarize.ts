@@ -34,7 +34,7 @@ export async function buildDigest(items: FeedItem[]): Promise<Digest> {
     .map((item, i) => `id=${i} | "${item.title}" — ${item.source} (${item.category})\n${item.snippet}`)
     .join('\n\n')
 
-  const response = await client.messages.create({
+  const response = await client.messages.stream({
     model: 'claude-sonnet-5',
     max_tokens: 24000,
     messages: [
@@ -93,7 +93,7 @@ Here are today's articles (${items.length} total):
 ${itemList}`,
       },
     ],
-  })
+  }).finalMessage()
 
   const text = response.content.find((b) => b.type === 'text')?.text ?? ''
   // Claude returns stories WITHOUT a link field; we inject the real link from
