@@ -95,7 +95,7 @@ ${itemList}`,
     ],
   })
 
-  const text = response.content[0].type === 'text' ? response.content[0].text : ''
+  const text = response.content.find((b) => b.type === 'text')?.text ?? ''
   // Claude returns stories WITHOUT a link field; we inject the real link from
   // items[id] below. Anything else on the object is passed through.
   type RawStory = Omit<DigestStory, 'link'> & { id: number }
